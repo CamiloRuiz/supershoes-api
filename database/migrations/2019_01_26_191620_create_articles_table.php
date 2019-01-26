@@ -17,11 +17,15 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description');
-            $table->integer('price');
+            $table->decimal('price', 8, 2);
             $table->integer('total_in_shelf');
             $table->integer('total_in_vault');
             $table->unsignedInteger('store_id');
-            $table->foreign('store_id')->references('id')->on('stores');
+            $table->foreign('store_id')
+                ->references('id')
+                ->on('stores')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

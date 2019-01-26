@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class Article extends JsonResource
 {
+    public static $wrap = null;
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +15,14 @@ class Article extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'description' => $this->description,
+            'name' => $this->name,
+            'price' => $this->price,
+            'total_in_shelf' => $this->total_in_shelf,
+            'total_in_vault' => $this->total_in_vault,
+            'store_name' => $this->store->name
+        ];
     }
 }

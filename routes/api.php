@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
+
+Route::apiResources([
+    'stores' => 'API\StoreController',
+    'articles' => 'API\ArticleController'
+]);
+
+// I think is better in this way
+Route::get('stores/{store}/articles', 'API\ArticleController@getArticlesByStore');
+
+// As document requires
+Route::get('articles/stores/{store}', 'API\ArticleController@getArticlesByStore');
