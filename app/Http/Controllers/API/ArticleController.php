@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Article;
+use App\Http\Requests\NewArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Store;
 use App\Http\Resources\Article as ArticleResource;
 use App\Http\Resources\Articles as ArticlesResource;
@@ -35,45 +37,60 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  NewArticleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewArticleRequest $request)
     {
-        //
+        $article = Article::create($request->all());
+        return response()->json($this->mapArticleResponse($article), 201);
     }
 
     /**
      * Return the specified resource.
      *
      * @param  Article $article
-     * @return ArticleResource
+     * @return \Illuminate\Http\Response
      */
     public function show(Article $article)
     {
-        return new ArticleResource($article);
+        return response()->json($this->mapArticleResponse($article), 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  UpdateArticleRequest  $request
+     * @param  Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-        //
+        $article->update($request->all());
+        return response()->json($this->mapArticleResponse($article), 202);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Map article object response
+     * @param Article $article
+     * @return array
+     */
+    public function mapArticleResponse(Article $article){
+        return [
+            'success' => true,
+            'article' => new ArticleResource($article)
+        ];
     }
 }

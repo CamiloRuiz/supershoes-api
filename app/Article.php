@@ -12,6 +12,17 @@ class Article extends Model
     protected $dates = ['deleted_at'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'price' => 'float',
+        'total_in_shelf' => 'integer',
+        'total_in_vault' => 'integer'
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
