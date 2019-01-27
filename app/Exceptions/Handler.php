@@ -8,6 +8,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -50,12 +51,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof ModelNotFoundException && $request->isJson()) {
+        if (($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException) && $request->wantsJson()) {
             return Route::respondWithRoute('api.fallback.404');
         }
 
         if ($exception instanceof FatalErrorException || $exception instanceof FatalThrowableError) {
-            return Route::respondWithRoute('api.fallback.500');
+            dd($exception);
+            return response()->json([
+                'success' => false,
+                'error_code' => 500,
+                'error_msg' => 'Server error'
+            ], 500);
         }
 
         return parent::render($request, $exception);
