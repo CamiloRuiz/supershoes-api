@@ -27,3 +27,20 @@ Route::get('stores/{store}/articles', 'API\ArticleController@getArticlesByStore'
 
 // As document requires
 Route::get('articles/stores/{store}', 'API\ArticleController@getArticlesByStore');
+
+// Fallbacks
+Route::fallback(function(){
+    return response()->json([
+        'success' => false,
+        'error_code' => 404,
+        'error_msg' => 'Record not found'
+    ], 404);
+})->name('api.fallback.404');
+
+Route::fallback(function(){
+    return response()->json([
+        'success' => false,
+        'error_code' => 500,
+        'error_msg' => 'Server Error'
+    ], 500);
+})->name('api.fallback.500');
