@@ -9,14 +9,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class StoresTest extends TestCase
 {
     /**
-     * Test get stores list
+     * Test fetches all stores
      *
      * @return void
      */
-    public function testGetStoresList()
+    public function testFetchesAllStores()
     {
-        $base64 = base64_encode("my_user:my_password");
-        $response = $this->json('GET', '/services/stores', [], ['Authorization' => 'Basic ' . $base64]);
+        $response = $this->json('GET', '/services/stores', [], $this->basicAuthHeader());
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'stores' => [
