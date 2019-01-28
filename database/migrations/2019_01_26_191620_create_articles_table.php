@@ -23,9 +23,7 @@ class CreateArticlesTable extends Migration
             $table->unsignedInteger('store_id');
             $table->foreign('store_id')
                 ->references('id')
-                ->on('stores')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->on('stores');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -27,4 +27,12 @@ class Store extends Model
     {
         return $this->hasMany('App\Article');
     }
+
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($store) {
+            $store->articles()->delete();
+        });
+    }
 }

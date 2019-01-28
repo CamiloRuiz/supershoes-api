@@ -22,7 +22,7 @@ class Article extends JsonResource
             'price' => $this->price,
             'total_in_shelf' => $this->total_in_shelf,
             'total_in_vault' => $this->total_in_vault,
-            'store_name' => $this->store->name
+            'store_name' => ($this->store->name) ?? ''
         ];
     }
 }
